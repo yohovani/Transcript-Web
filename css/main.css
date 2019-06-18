@@ -1,0 +1,53 @@
+.body{
+    background: #283148;
+}
+
+.button-color {
+    background-color: #283148;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    padding: 7px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  
+  .enlace{
+    color: #913535;
+  }
+
+  .registro{
+    color: #ffffff;
+  }
+
+  .centrar{
+    position: relative;
+    top: 15%;
+    left: 15%;
+  }
+
+  .columnaR{
+    position: relative;
+    top: 15%;
+    right: -50%;
+  }
+
+  .nav{
+    background-color: #913535;
+  }
+
+  .tabla{
+    background-color: #913535;
+  }
+
+  table th {
+    text-align: center;
+  }
+
+  table td {
+    text-align: center;
+  }

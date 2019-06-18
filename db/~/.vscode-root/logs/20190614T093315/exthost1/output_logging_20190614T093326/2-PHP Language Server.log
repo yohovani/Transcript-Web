@@ -1,0 +1,16 @@
+PHP Warning:  PHP Startup: Unable to load dynamic library 'gd' (tried: /usr/lib/php/modules/gd (/usr/lib/php/modules/gd: cannot open shared object file: No such file or directory), /usr/lib/php/modules/gd.so (/usr/lib/php/modules/gd.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
+
+DEBUG     Checking PHPLS_ALLOW_XDEBUG
+DEBUG     The xdebug extension is not loaded
+
+[Info  - 9:33:26 AM] 3 files total
+[Info  - 9:33:26 AM] Indexing project for definitions and static references
+Parsing file:///srv/http/Transcript/home.php
+Parsing file:///srv/http/Transcript/php/conexion.php
+Parsing file:///srv/http/Transcript/php/login.php
+[Info  - 9:33:26 AM] Indexing project for dynamic references
+Parsing file:///srv/http/Transcript/home.php
+Parsing file:///srv/http/Transcript/php/conexion.php
+Parsing file:///srv/http/Transcript/php/login.php
+[Info  - 9:33:26 AM] 0 Packages
+[Info  - 9:33:26 AM] All 3 PHP files parsed in 0 seconds. 148 MiB allocated.
