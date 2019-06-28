@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
@@ -54,6 +55,9 @@
             <thead class="tabla">
                 <tr>
                     <th scope="col">
+                        <font color=white>Id</font>
+                    </th>
+                    <th scope="col">
                         <font color=white>Titulo</font>
                     </th>
                     <th scope="col">
@@ -70,23 +74,27 @@
             <tbody>
                 <?php
                     require_once ('php/conexion.php');
-                    $sqlTranscripciones = "SELECT t.* from transcripcion t INNER JOIN usuario u INNER JOIN usuario_transcripcion ut ON t.id = ut.fkIdUsuario AND u.id = fkIdTranscripcion WHERE u.id = '".$_SESSION['id']."'";
+                    $idTranscripcionUsuario = 1;
+                    $sqlTranscripciones = "SELECT t.* from transcripcion t INNER JOIN usuario u INNER JOIN usuario_transcripcion ut ON u.id = ut.fkIdUsuario AND t.id = fkIdTranscripcion WHERE u.id = '".$_SESSION['id']."'";
                     $sqlEjecucion = mysqli_query($conexion,$sqlTranscripciones) or die(mysqli_error($conexion));
                     while($transcripcion = mysqli_fetch_array($sqlEjecucion)){
                         echo "<tr>";
-                        echo "<th scope='row'>".$transcripcion['Titulo']."</th>";
+                        echo "<th scope='row'>".$idTranscripcionUsuario."</th>";
+                        echo "<th>".utf8_decode($transcripcion['Titulo'])."</th>";
                         echo "<th>".$transcripcion['FechaCreacion']."</th>";
                         echo "<th>".$transcripcion['UltimaModificacion']."</th>";
-                        echo "<td class='form-inline justify-content-center' align='center'><button class='btn btn-secondary' data-toggle='modal' data-tooltip='tooltip' data-placement='bottom' title='Editar Transcripci&oacute;n' data-target='#edicion'><img src='fonts/edit.svg'>Editar</button>&nbsp;"; 
-                          echo "<form action='php/pdf.php' method='post' >";
-                            echo "<input type='hidden' name='contenido' value='".$transcripcion['Transcripcion']."'>";
-                            echo "<input type='hidden' name='titulo' value='".$transcripcion['Titulo']."'>";
-                            echo "<input type='hidden' name='autor' value='".$_SESSION['nombre']."'>";
-                            echo "<input type='hidden' name='area' value='".$_SESSION['area']."'>";
-                            echo "<button type='submit' class='btn btn-success'><img src='fonts/download.svg'>Descargar</button>&nbsp;";
+                        echo "<td class='form-inline justify-content-center' align='center'><button id='btnEditar' class='btn btn-secondary' data-toggle='modal' data-tooltip='tooltip' data-placement='bottom' title='Editar Transcripci&oacute;n' data-target='#edicion' onclick='verTranscripcion(".$transcripcion['id'].")' id='btnEditar'><img src='fonts/edit.svg'>Editar</button>&nbsp;"; 
+                          echo "<form action='php/pdf.php' method='post' target='_blank'>";
+                            echo "<input type='hidden' name='idTranscripcion' id='idTranscripcion' value='".$transcripcion['id']."'>";
+                            echo "<input type='hidden' name='transcripcion' id='transcripcion' value='".$transcripcion['Transcripcion']."'>";
+                            echo "<input type='hidden' name='titulo' id='titulo' value='".$transcripcion['Titulo']."'>";
+                            echo "<input type='hidden' name='autor' id='autor' value='".$_SESSION['nombre']."'>";
+                            echo "<input type='hidden' name='area' id='area' value='".$_SESSION['area']."'>";
+                            echo "<button type='submit' class='btn btn-success' ><img src='fonts/download.svg'>Descargar</button>&nbsp;";
                         echo "</form>";
                             echo "<button type='button' class='btn btn-danger' data-toggle='modal' data-tooltip='tooltip' data-placement='bottom' title='Eliminar Transcripci&oacute;n' data-target='#eliminar'><img src='fonts/delete.svg'>Eliminar</button></td>";
                         echo "</tr>";
+                        $idTranscripcionUsuario += 1;
                     }
                 ?>
             </tbody>
@@ -98,23 +106,10 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Editar</h4>
+                    <h4 class="modal-title"><img src='fonts/edit.svg'>Editar</button>&nbsp;</h4>
                     <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Titulo</label>
-                        <div class="col-sm-12"><input type="text" name="titulo" id="titulo" class="form-control"></div>      
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Contenido</label>
-                        <div class="col-sm-12"><textarea name="contenido" id="contenido" class="form-control" rows="5"></textarea></div>   
-                    </div> 
-                    <div class="form-group" align="center">
-                            <button class="btn btn-secondary" >Cancelar</button>
-                            <input type="submit" class="button-color" value="Aceptar">  
-                    </div> 
-                </form>
+                <div id="verTranscripcion"></div>
             </div>
         </div>
     </div>
@@ -157,6 +152,23 @@
                         <input type="submit" class="button-color" value="Cambiar Contrase&ntilde;a">        
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Verificacion de cambios -->
+    <div class="modal fade" name="mensaje" id="mensaje">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>&nbsp;Los cambios se guardaron correctemente</h4>
+                    <button type="button" class="close" data-dismiss="modal">x</button>
+                </div>
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Se realizo una actualizaci&oacute;n!</h4>
+                    <p>Los datos se actualizaron correctemente.</p>
+                    <center><button class='btn btn-success' data-dismiss='modal'>Aceptar</button></center>
+                </div>
             </div>
         </div>
     </div>

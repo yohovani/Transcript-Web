@@ -2,7 +2,7 @@
     date_default_timezone_set('America/Mexico_City');
     $fecha = date("d/M/Y");
     $titulo = $_POST['titulo'];
-    $contenido = $_POST['contenido'];
+    $contenido = $_POST['transcripcion'];
     $autor = $_POST['autor'];
     $area = $_POST['area'];
     require_once("libraries/fpdf/fpdf.php");
