@@ -141,17 +141,20 @@
                     <h4>&nbsp;Cambiar Contrase&ntilde;a</h4>
                     <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
-                <form class="form-horizontal">
+                <div class="form-horizontal">
                     <div class="form-group" align="center">
                         <div class="col-sm-12">
-                            <br><input type="text" name="password-actual" id="password-actual" class="form-control" placeholder="Contrase&ntilde;a Actual">
+                            <br><input type="password" name="password-actual" id="password-actual" class="form-control" placeholder="Contrase&ntilde;a Actual" onkeyup="validacionContrasennaActual()">
+                            <?php echo "<input type='hidden' value='".$_SESSION['password']."' id='contrasennaActual' name='contrasennaActual' >"; ?>
                             <p><font color=gray>___________________________________________</font></p>
-                            <input type="text" name="password1" id="password1" class="form-control" placeholder="Nueva Contrase&ntilde;a">
-                            <br><input type="text" name="password2" id="password2" class="form-control" placeholder="Validar Contrase&ntilde;a">
+                            <input type="password" name="newPassword1" id="newPassword1" class="form-control" placeholder="Nueva Contrase&ntilde;a" onkeyup="validacionCambioContrasenna()" disabled>
+                            <br><input type="password" name="newPassword2" id="newPassword2" class="form-control" placeholder="Validar Contrase&ntilde;a" onkeyup="validacionCambioContrasenna()" disabled><br>
+                            <div class="alert alert-danger ocultar" role="alert" id="pass-dont-match">Las Contrase&ntilde;as no coinciden!</div>
+                            <div class="alert alert-warning ocultar" role="alert" id="pass-length">La Contrase&ntilde;a debe contener al menos 8 caracteres!</div>
                         </div><br>
-                        <input type="submit" class="button-color" value="Cambiar Contrase&ntilde;a">        
+                        <button class="button-color" onclick="cambiarContrasenna()" id="btn-password" disabled>Cambiar Contrase&ntilde;a</button>       
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -166,7 +169,7 @@
                 </div>
                 <div class="alert alert-success" role="alert">
                     <h4 class="alert-heading">Se realizo una actualizaci&oacute;n!</h4>
-                    <p>Los datos se actualizaron correctemente.</p>
+                    <p>Los datos se actualizaron correctemente, es posible que debas actualizar la p&aacute;gina para visualizar los cambios.</p>
                     <center><button class='btn btn-success' data-dismiss='modal'>Aceptar</button></center>
                 </div>
             </div>

@@ -1,11 +1,20 @@
 <?php
+    include "consulta.php";
+    require("libraries/fpdf/fpdf.php");
     date_default_timezone_set('America/Mexico_City');
     $fecha = date("d/M/Y");
-    $titulo = $_POST['titulo'];
-    $contenido = $_POST['transcripcion'];
+    $id = $_POST['idTranscripcion'];
+    $sqlRequest = new consulta();
+    $sqlRequest->querySelect("*","transcripcion","id = '".$id."'");
+    $resultado = $sqlRequest->runQuery();
+    $titulo = "";
+    $contenido = "";
+    while($transcripcion = mysqli_fetch_array($resultado)){
+        $titulo = utf8_decode($transcripcion['Titulo']);
+        $contenido = utf8_decode($transcripcion['Transcripcion']);
+    }
     $autor = $_POST['autor'];
     $area = $_POST['area'];
-    require_once("libraries/fpdf/fpdf.php");
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->setFont('Times','B',12);

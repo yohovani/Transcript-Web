@@ -64,3 +64,52 @@ function verTranscripcion(idTranscripcion){
 function mostarMensaje(){
 	$("#mensaje").modal("show");
 }
+
+function validacionContrasennaActual(){
+	var contrasenna = document.getElementById("password-actual");
+	var contrasennaSesion = document.getElementById("contrasennaActual");
+	var newContrasenna1 = document.getElementById("newPassword1");
+	var newContrasenna2 = document.getElementById("newPassword2");
+	var button = document.getElementById("btn-password");
+	if(contrasenna.value.length >= (contrasennaSesion.value.length*0.75) ){
+		if(contrasenna.value == contrasennaSesion.value){
+			contrasenna.style.background = "#009817";
+			button.disabled = true;
+			newContrasenna1.disabled = false;
+			newContrasenna2.disabled = false;
+		}else{
+			contrasenna.style.background = "#ac0000";
+			button.disabled = true;
+			newContrasenna1.disabled = true;
+			newContrasenna2.disabled = true;
+		}
+	}
+}
+
+function validacionCambioContrasenna(){
+	var newContrasenna1 = document.getElementById("newPassword1");
+	var newContrasenna2 = document.getElementById("newPassword2");
+	var button = document.getElementById("btn-password");
+	var alert = document.getElementById("pass-dont-match");
+	var alertLength = document.getElementById("pass-length");
+	if(newContrasenna1.value.length == newContrasenna2.value.length  && newContrasenna1.value != "" && newContrasenna1.value.length >= 8){
+		if(newContrasenna1.value == newContrasenna2.value){
+			newContrasenna1.style.background = "#00b10f";
+			newContrasenna2.style.background = "#00b10f";
+			button.disabled = false;
+			alert.style.display = "none";
+			alertLength.style.display = "none";
+		}else{
+			newContrasenna1.style.background = "#ee0000";
+			newContrasenna2.style.background = "#ee0000";
+			button.disabled = true;
+			alert.style.display = "block";
+		}
+	}else{
+		newContrasenna1.style.background = "#ee0000";
+		newContrasenna2.style.background = "#ee0000";
+		if(newContrasenna1.value.length < 8 && newContrasenna1.value.length > 0){
+			alertLength.style.display = "block";
+		}
+	}
+}

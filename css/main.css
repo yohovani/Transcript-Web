@@ -51,3 +51,7 @@
   table td {
     text-align: center;
   }
+
+  .ocultar{
+    display: none;
+  }
