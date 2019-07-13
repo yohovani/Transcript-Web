@@ -138,18 +138,12 @@
         }
     }
 
-  /*  if(isset($_POST['recuperarEmail'])){
+    if(isset($_POST['recuperarEmail'])){
         $p = new password();
         $p->recoverPassword($_POST['recuperarEmail']);
         echo "Mensaje enviado a: ".$_POST['recuperarEmail'];
         //echo "<script>alert('Se envio un Correo El&eacute;ctronico al correo: '".$_POST['recuperarEmail'].");window.location.href='/Transcript/';</script>";
     }else{
         echo ":v";
-    }*/
-    $p = new password();
-    $p->recoverPassword("yohovanivargas@gmail.com");
-    echo "Mensaje enviado a: yohovanivargas@gmail.com";
-
-    
-
-?>
+    }
+    ?>
