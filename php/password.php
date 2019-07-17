@@ -77,6 +77,7 @@
         }
 
         function recoverPassword($correo){
+ ini_set('display_errors', 1);
             $this->sql = "SELECT * FROM usuario WHERE CorreoElectronico = '".$correo."'";
             $resultado = $this->runQuery();
             $nombre = "";
@@ -134,16 +135,19 @@
                 </div>
             </body>
             </html>';
-            mail($correo,"Cambio de contraseña en Transcript",$cuerpoCorreo);
+            mail($correo,"Cambio de contraseña en Transcript",$cuerpoCorreo) || print_r(error_get_last());
         }
     }
 
-    if(isset($_POST['recuperarEmail'])){
+    /*if(isset($_POST['recuperarEmail'])){
         $p = new password();
         $p->recoverPassword($_POST['recuperarEmail']);
         echo "Mensaje enviado a: ".$_POST['recuperarEmail'];
         //echo "<script>alert('Se envio un Correo El&eacute;ctronico al correo: '".$_POST['recuperarEmail'].");window.location.href='/Transcript/';</script>";
     }else{
         echo ":v";
-    }
+    }*/
+$p = new password();
+$p->recoverPassword("yohovanivargas@gmail.com");
+echo "Se envio un correo";
     ?>

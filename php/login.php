@@ -6,7 +6,7 @@
     }
 
     function db(){
-        require_once('conexion.php');
+        require('conexion.php');
         $name = $_POST['user'];
         $password = $_POST['password'];
         if(preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $name) && preg_match("/^([a-zA-Z0-9\._-])+/", $password)){

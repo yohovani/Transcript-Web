@@ -15,7 +15,7 @@
         }
     }else{
         if(preg_match("/[a-zA-Z]/", $nombre) && preg_match("/[a-zA-Z]/", $_POST['apellido']) && preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email) && preg_match("/^([a-zA-Z0-9\._-])+/", $password1)){
-            $sqlRegistro = "INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) ('".$nombre."','".$_POST['apellido']."','".$email."','".$password1."')";
+            $sqlRegistro = "INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre."','".$_POST['apellido']."','".$email."','".$password1."','".$area."')";
             registro($sqlRegistro);
         }else{
             echo "<script>alert('Datos de registro no validos');window.location.href='/Transcript/';</script>";
