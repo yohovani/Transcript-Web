@@ -7,8 +7,9 @@
         }
 
         function runQuery(){
-            require_once("conexion.php");
-            return mysqli_query($conexion,$this->sql) or die(mysqli_error($conexion));
+            require("conexion.php");
+            $resultado = mysqli_query($conexion,$this->sql) or die(mysqli_error($conexion));
+            return $resultado;
         }
 
         function setSql($peticion){

@@ -1,3 +1,9 @@
+function listarTranscripciones(){
+	$.post("/Transcript/php/transcripciones.php", {id:null}, function(mensaje) {
+		$("#lista_transcripciones").html(mensaje);
+	});
+}
+
 function verificarPassword(){
 	//Obtenes la información desde el index mediante el Id de los campos de registro
 	var pass1 = document.getElementById('contrasenna');
@@ -19,21 +25,6 @@ function verificarPassword(){
 	}
 }
 
-function peticionHttpEditarTranscripcion(){
-	var idTranscripcionEditar = document.getElementById("idTranscripcionEditar").value;
-	var editarTitulo = document.getElementById("editarTitulo").value;
-	var editarTranscripcion = document.getElementById("editarTranscripcion").value;
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function(){
-		if(xhttp.readyState == 4 && xhttp.status == 200){
-			document.getElementById("edicion").innerHTML = xhttp.responseText;
-		}
-	};
-	xhttp.open("POST","/Transcript/php/editarTranscripcion.php");
-	xhttp.setRequestHeader("Content-type", "aplication/x-www-form-urlencoded");
-	xhttp.send("id="+idTranscripcionEditar+"&titulo="+editarTitulo+"&transcripcion="+editarTranscripcion+"");
-}
-
 function editarTranscripcion(){
 	var idTranscripcionEditar = document.getElementById("idTranscripcionEditar").value;
 	var editarTitulo = document.getElementById("editarTitulo").value;
@@ -49,6 +40,7 @@ function editarTranscripcion(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("id="+idTranscripcionEditar+"&titulo="+editarTitulo+"&transcripcion="+editarTranscripcion);
 	mostarMensaje();
+
 }
 
 function verTranscripcion(idTranscripcion){
@@ -63,6 +55,7 @@ function verTranscripcion(idTranscripcion){
 
 function mostarMensaje(){
 	$("#mensaje").modal("show");
+	listarTranscripciones();
 }
 
 function validacionContrasennaActual(){
@@ -112,4 +105,29 @@ function validacionCambioContrasenna(){
 			alertLength.style.display = "block";
 		}
 	}
+}
+
+function mostrarInformacionEliminar(idTranscripcion){
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function(){
+		if(xhttp.readyState == 4 && xhttp.status == 200){
+			document.getElementById("eliminarModal").innerHTML = xhttp.responseText;
+		}
+	};
+	xhttp.open("POST","/Transcript/php/eliminarTranscripcion.php",true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("id="+idTranscripcion+"&opcion="+'1');
+}
+
+function eliminarTranscripcion(idTranscripcion){
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function(){
+		if(xhttp.readyState == 4 && xhttp.status == 200){
+			document.getElementById("eliminarModal").innerHTML = xhttp.responseText;
+		}
+	};
+	xhttp.open("POST","/Transcript/php/eliminarTranscripcion.php",true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("id="+idTranscripcion+"&opcion="+'2');
+	listarTranscripciones();
 }

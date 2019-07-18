@@ -16,7 +16,7 @@
     <title>Transcript</title>
 </head>
 
-<body>
+<body onload="listarTranscripciones()">
     <?php
         session_start();
         if(!isset($_SESSION['nombre'])){
@@ -71,32 +71,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
-                <?php
-                    require_once ('php/conexion.php');
-                    $idTranscripcionUsuario = 1;
-                    $sqlTranscripciones = "SELECT t.* from transcripcion t INNER JOIN usuario u INNER JOIN usuario_transcripcion ut ON u.id = ut.fkIdUsuario AND t.id = fkIdTranscripcion WHERE u.id = '".$_SESSION['id']."'";
-                    $sqlEjecucion = mysqli_query($conexion,$sqlTranscripciones) or die(mysqli_error($conexion));
-                    while($transcripcion = mysqli_fetch_array($sqlEjecucion)){
-                        echo "<tr>";
-                        echo "<th scope='row'>".$idTranscripcionUsuario."</th>";
-                        echo "<th>".utf8_decode($transcripcion['Titulo'])."</th>";
-                        echo "<th>".$transcripcion['FechaCreacion']."</th>";
-                        echo "<th>".$transcripcion['UltimaModificacion']."</th>";
-                        echo "<td class='form-inline justify-content-center' align='center'><button id='btnEditar' class='btn btn-secondary' data-toggle='modal' data-tooltip='tooltip' data-placement='bottom' title='Editar Transcripci&oacute;n' data-target='#edicion' onclick='verTranscripcion(".$transcripcion['id'].")' id='btnEditar'><img src='fonts/edit.svg'>Editar</button>&nbsp;"; 
-                          echo "<form action='php/pdf.php' method='post' target='_blank'>";
-                            echo "<input type='hidden' name='idTranscripcion' id='idTranscripcion' value='".$transcripcion['id']."'>";
-                            echo "<input type='hidden' name='transcripcion' id='transcripcion' value='".$transcripcion['Transcripcion']."'>";
-                            echo "<input type='hidden' name='titulo' id='titulo' value='".$transcripcion['Titulo']."'>";
-                            echo "<input type='hidden' name='autor' id='autor' value='".$_SESSION['nombre']."'>";
-                            echo "<input type='hidden' name='area' id='area' value='".$_SESSION['area']."'>";
-                            echo "<button type='submit' class='btn btn-success' ><img src='fonts/download.svg'>Descargar</button>&nbsp;";
-                        echo "</form>";
-                            echo "<button type='button' class='btn btn-danger' data-toggle='modal' data-tooltip='tooltip' data-placement='bottom' title='Eliminar Transcripci&oacute;n' data-target='#eliminar'><img src='fonts/delete.svg'>Eliminar</button></td>";
-                        echo "</tr>";
-                        $idTranscripcionUsuario += 1;
-                    }
-                ?>
+            <tbody id="lista_transcripciones">
             </tbody>
         </table>
     </div>
@@ -122,13 +97,8 @@
                     <img src="fonts/warning.svg"><h4>&nbsp;Eliminar</h4>
                     <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
-                <label class="control-label col-sm-12">¿En verdad desea eliminar la transcripci&oacute;n: <?php  ?>?</label>  
-                <form class="form-horizontal">
-                    <div class="form-group" align="center">
-                        <button type="button" class="btn btn-danger"><img src="fonts/delete.svg">&nbsp;Eliminar</button></td>
-                        <button class="btn btn-secondary"><img src="fonts/cancel.svg">&nbsp;Cancelar</button>
-                    </div> 
-                 </form>
+                <div id="eliminarModal"></div>
+                
             </div>
         </div>
     </div>
