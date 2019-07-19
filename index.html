@@ -70,16 +70,33 @@
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
-                <br>
-                <h4>Recuperar Contrase&ntilde;a</h4>
-                <div class="modal-body">
-                    <form action="php/password.php" method="POST">
-                        <input type="text" class="form-control" name="recuperarEmail" id="recuperarEmail"
-                            placeholder="Correo Electr&oacute;nico" required><br>
-                        <input type="hidden" name="opcion" value="1">
-                        <button class="button button-color" type="submit">Recuperar Contrase&ntilde;a</button><br><br>
-                    </form>
+                <div class="modal-header">
+                        <br>
+                        <h4>Recuperar Contrase&ntilde;a</h4>
+                        <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
+                <div class="modal-body" id="recuperar-body">
+                    <input type="text" class="form-control" name="recuperarEmail" id="recuperarEmail"
+                        placeholder="Correo Electr&oacute;nico" required><br>
+                    <input type="hidden" name="opcion" value="1">
+                    <button class="button button-color" onclick="recuperarContrasenia()">Recuperar Contrase&ntilde;a</button><br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal confirmacion Recuperar Contraseña-->
+    <div class="modal fade" id="mensaje_email" align="center">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <br>
+                    <h4>Recuperar Contrase&ntilde;a</h4>
+                    <button type="button" class="close" data-dismiss="modal">x</button>
+                </div>
+                <div class="modal-body" id="mensaje_email-body"></div>
+
             </div>
         </div>
     </div>

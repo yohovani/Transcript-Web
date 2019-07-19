@@ -107,6 +107,38 @@ function validacionCambioContrasenna(){
 	}
 }
 
+function cambiarContrasenna(){
+	var pass_actual = document.getElementById("password-actual");
+	var password1 = document.getElementById("newPassword1");
+	var password = document.getElementById("newPassword2");
+	var button = document.getElementById("btn-password");
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function(){
+		if(xhttp.readyState == 4 && xhttp.status == 200){
+			document.getElementById("mensaje-cambiar-password-body").innerHTML = xhttp.responseText;
+		}
+	};
+	xhttp.open("POST","/Transcript/php/password.php",true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("newPassword="+password.value);
+	//Limpieza de los elementos del modal de cambiar contrasenna
+	pass_actual.value = "";
+	password1.value = "";
+	password.value = "";
+	//Cambio de color
+	pass_actual.style.background = "#ffffff";
+	password.style.background = "#ffffff";
+	password1.style.background = "#ffffff";
+	//Desabilitar elementos
+	button.disabled = true;
+	password.disabled = true;
+	password1.disabled = true;
+	//Mostrar mensajes de confirmacion y ocultar el modal de cambiar contrasenna
+	$("#cambiar-password").modal("hide");
+	$("#mensaje-cambiar-password").modal("show");
+}
+
 function mostrarInformacionEliminar(idTranscripcion){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function(){
@@ -130,4 +162,26 @@ function eliminarTranscripcion(idTranscripcion){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("id="+idTranscripcion+"&opcion="+'2');
 	listarTranscripciones();
+}
+
+function recuperarContrasenia(){
+	var correo = document.getElementById("recuperarEmail");
+	if(correo != null && correo != ""){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function(){
+			if(xhttp.readyState == 4 && xhttp.status == 200){
+				document.getElementById("mensaje_email-body").innerHTML = xhttp.responseText;
+			}
+		};
+		xhttp.open("POST","/Transcript/php/password.php",true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send("recuperarEmail="+correo.value);
+		mostarMensajeEmail();
+		correo.value = "";
+	}
+}
+
+function mostarMensajeEmail(){
+	$("#recuperar").modal("hide");
+	$("#mensaje_email").modal("show");
 }

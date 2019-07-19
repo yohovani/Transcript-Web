@@ -13,17 +13,18 @@
         }
 
         function runQuery(){
-            require_once("conexion.php");
+            require("conexion.php");
             $resultado = mysqli_query($conexion,$this->sql) or die(mysqli_error($conexion));
             return $resultado;
         }
 
         function updatePassword($password,$id){
             $this->sql = "UPDATE usuario SET Password = '".$password."' WHERE id = '".$id."'";
-            runQuery();
+            $this->runQuery();
             $this->sql = "SELECT Nombre,CorreoElectronico FROM usuario WHERE id = '".$id."'";
-            $correo = runQuery();
-            $from = mysqli_fetch_array($resultado);
+            $correo = $this->runQuery();
+            $_SESSION['password'] = $password;
+            $from = mysqli_fetch_array($correo);
             $cuerpoCorreo = '<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -74,10 +75,15 @@
             </body>
             </html>';
             mail($from['CorreoElectronico'],"Cambio de contraseña en Transcript",$cuerpoCorreo);
+            echo "<div class='alert alert-success' role='alert'>
+                    <h4 class='alert-heading'>Se ha enviado un correo electr&oacute;nico a la direcci&oacute;n: ".$from['CorreoElectronico']."!</h4>
+                    <p>Se ha enviado un correo con la contrase&ntilde;a al correo que se tiene registrado, si el mensaje no aparece en su bandeja de entrada, revise el correo spam.</p>
+                    <hr>
+                    <button type='button' class='button-color' data-dismiss='modal'>Aceptar</button>
+                </div>";
         }
 
         function recoverPassword($correo){
- ini_set('display_errors', 1);
             $this->sql = "SELECT * FROM usuario WHERE CorreoElectronico = '".$correo."'";
             $resultado = $this->runQuery();
             $nombre = "";
@@ -136,18 +142,22 @@
             </body>
             </html>';
             mail($correo,"Cambio de contraseña en Transcript",$cuerpoCorreo) || print_r(error_get_last());
+            echo "<div class='alert alert-success' role='alert'>
+                    <h4 class='alert-heading'>Se ha enviado un correo electr&oacute;nico a la direcci&oacute;n: ".$correo."!</h4>
+                    <p>Se ha enviado un correo con la contrase&ntilde;a al correo que se proporciono, si el mensaje no aparece en su bandeja de entrada, revise el correo spam.</p>
+                    <hr>
+                    <button type='button' class='button-color' data-dismiss='modal'>Aceptar</button>
+                </div>";
         }
     }
-
-    /*if(isset($_POST['recuperarEmail'])){
-        $p = new password();
+    $p = new password();
+    if(isset($_POST['recuperarEmail'])){
         $p->recoverPassword($_POST['recuperarEmail']);
-        echo "Mensaje enviado a: ".$_POST['recuperarEmail'];
-        //echo "<script>alert('Se envio un Correo El&eacute;ctronico al correo: '".$_POST['recuperarEmail'].");window.location.href='/Transcript/';</script>";
     }else{
-        echo ":v";
-    }*/
-$p = new password();
-$p->recoverPassword("yohovanivargas@gmail.com");
-echo "Se envio un correo";
+        session_start();
+        if(isset($_POST['newPassword'])){
+            $p->updatePassword($_POST['newPassword'],$_SESSION['id']);
+        }
+        
+    }
     ?>

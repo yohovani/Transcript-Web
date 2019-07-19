@@ -29,6 +29,8 @@
                 $_SESSION['area'] = $area;
                 session_set_cookie_params(3600, "/Transcript");
                 header( 'Location: /Transcript/home.php');
+            }else{
+                echo "<script>alert('Credenciales Erroneas');window.location.href='/Transcript/';</script>";
             }
         }else{
             echo "<script>alert('Credenciales Erroneas');window.location.href='/Transcript/';</script>";

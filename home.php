@@ -116,7 +116,7 @@
                         <div class="col-sm-12">
                             <br><input type="password" name="password-actual" id="password-actual" class="form-control" placeholder="Contrase&ntilde;a Actual" onkeyup="validacionContrasennaActual()">
                             <?php echo "<input type='hidden' value='".$_SESSION['password']."' id='contrasennaActual' name='contrasennaActual' >"; ?>
-                            <p><font color=gray>___________________________________________</font></p>
+                            <hr>
                             <input type="password" name="newPassword1" id="newPassword1" class="form-control" placeholder="Nueva Contrase&ntilde;a" onkeyup="validacionCambioContrasenna()" disabled>
                             <br><input type="password" name="newPassword2" id="newPassword2" class="form-control" placeholder="Validar Contrase&ntilde;a" onkeyup="validacionCambioContrasenna()" disabled><br>
                             <div class="alert alert-danger ocultar" role="alert" id="pass-dont-match">Las Contrase&ntilde;as no coinciden!</div>
@@ -128,6 +128,21 @@
             </div>
         </div>
     </div>
+    <!-- Modal de MEnsaje validación Cambiar Contraseña -->
+    <div class="modal fade" name="mensaje-cambiar-password" id="mensaje-cambiar-password">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>&nbsp;Cambiar Contrase&ntilde;a</h4>
+                    <button type="button" class="close" data-dismiss="modal">x</button>
+                </div>
+                <div class="modal-body" align="center" id="mensaje-cambiar-password-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Verificacion de cambios -->
     <div class="modal fade" name="mensaje" id="mensaje">
         <div class="modal-dialog">
