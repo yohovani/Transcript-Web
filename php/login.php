@@ -38,14 +38,51 @@
     }
 
     function facebook(){
-       /* session_start();
-        $fb = new Facebook\Facebook([
-            'app_id' => '2464888593735937', // Replace {app-id} with your app id
-            'app_secret' => '{app-secret}',
-            'default_graph_version' => 'v3.2',
-            ]);
-        $helper = $fb->getRedirectLoginHelper();
-        $permissions = ['email']; // Optional permissions
-        $loginUrl = $helper->getLoginUrl('fb-callback.php', $permissions);
-        echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';*/
+        require('conexion.php');
+        require_once("consulta.php");
+        $sql = new consulta();
+        $name = $_POST['name'];
+        $id = $_POST['id'];
+        $email = $_POST['email'];
+        echo $email." , ".$name." , ".$id;
+        $sql->setSql("SELECT * FROM usuario WHERE `CorreoElectronico` = '".$email."' AND `Password` = '".$id."'");
+        $resultado = $sql->runQuery();
+        $usuario_encontrado = 0;
+        while($usuario = mysqli_fetch_array($resultado)){
+            $idUsuario = $usuario['id'];
+            $usuario_encontrado +=1;
+        }
+
+        if($usuario_encontrado > 0){
+            session_start();
+            $_SESSION['id'] = $idUsuario;
+            $_SESSION['nombre'] = $name;
+            $_SESSION['password'] = $id;
+            $_SESSION['area'] = $area;
+            header('Location: /Transcript/home.php');
+        }else{
+            $nombre = explode(' ', $name);
+            if($nombre.lenght > 2){
+                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre[0]."','".$nombre[1]."','NULL','".$email."','".$id."','Facebook')");
+            }else{
+                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre[0]."','".$nombre[1]."','".$nombre[2]."','".$email."','".$id."','Facebook')");
+            }
+            $sql->runQuery();
+            $sql->setSql("SELECT * FROM usuario WHERE `CorreoElectronico` = '".$email."' AND `Password` = '".$id."'");
+            $resultado = $sql->runQuery();
+            $usuario_encontrado = 0;
+            while($usuario = mysqli_fetch_array($resultado)){
+                $idUsuario = $usuario['id'];
+                $usuario_encontrado +=1;
+            }
+
+            if($usuario_encontrado > 0){
+                session_start();
+                $_SESSION['id'] = $usuario['id'];
+                $_SESSION['nombre'] = $name;
+                $_SESSION['password'] = $id;
+                $_SESSION['area'] = $area;
+                header('Location: /Transcript/home.php');
+            }
+        }
     }

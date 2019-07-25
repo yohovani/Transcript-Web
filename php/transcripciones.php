@@ -1,7 +1,6 @@
 <?php
     session_start();
     require_once ('conexion.php');
-    echo ":v";
     $idTranscripcionUsuario = 1;
     $sqlTranscripciones = "SELECT t.* from transcripcion t INNER JOIN usuario u INNER JOIN usuario_transcripcion ut ON u.id = ut.fkIdUsuario AND t.id = fkIdTranscripcion WHERE u.id = '".$_SESSION['id']."'";
     $sqlEjecucion = mysqli_query($conexion,$sqlTranscripciones) or die(mysqli_error($conexion));

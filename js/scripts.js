@@ -185,3 +185,4 @@ function mostarMensajeEmail(){
 	$("#recuperar").modal("hide");
 	$("#mensaje_email").modal("show");
 }
+

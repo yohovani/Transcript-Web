@@ -18,17 +18,106 @@
 </head>
 
 <body class="body">
-    <script>
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '2464888593735937',
-                autoLogAppEvents: true,
-                xfbml: true,
-                version: 'v3.3'
-            });
-        };
-    </script>
-    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+<script>
+    // This is called with the results from from FB.getLoginStatus().
+    function statusChangeCallback(response) {
+        console.log('statusChangeCallback');
+        console.log(response);
+        // The response object is returned with a status field that lets the
+        // app know the current login status of the person.
+        // Full docs on the response object can be found in the documentation
+        // for FB.getLoginStatus().
+        console.log('response: '+ Object.getOwnPropertyNames(response));
+        if (response.status === 'connected') {
+            // Logged into your app and Facebook.
+            login();
+        } else {
+            // The person is not logged into your app or we are unable to tell.
+            document.getElementById('status').innerHTML = 'Please log ' +
+                'into this app.';
+        }
+    }
+
+    // This function is called when someone finishes with the Login
+    // Button.  See the onlogin handler attached to it in the sample
+    // code below.
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '2464888593735937',
+            cookie: true,  // enable cookies to allow the server to access 
+            // the session
+            xfbml: true,  // parse social plugins on this page
+            version: 'v3.3' // The Graph API version to use for the call
+        });
+
+        // Now that we've initialized the JavaScript SDK, we call 
+        // FB.getLoginStatus().  This function gets the state of the
+        // person visiting this page and can return one of three states to
+        // the callback you provide.  They can be:
+        //
+        // 1. Logged into your app ('connected')
+        // 2. Logged into Facebook, but not your app ('not_authorized')
+        // 3. Not logged into Facebook and can't tell if they are logged into
+        //    your app or not.
+        //
+        // These three cases are handled in the callback function.
+
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+
+    };
+
+    // Load the SDK asynchronously
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // Here we run a very simple test of the Graph API after login is
+    // successful.  See statusChangeCallback() for when this call is made.
+    function testAPI() {
+        console.log('Welcome!  Fetching your information.... ');
+        
+        FB.api('/me', {fields: 'name, email' }, function (response) {
+            console.log('Successful login for: ' + Object.values(response));
+            colsole.log('Propiedades: '+ Object.getOwnPropertyNames(response));
+            document.getElementById('status').innerHTML =
+                'Thanks for logging in, ' + response.name + '!';
+        });
+    
+       
+    }
+    function login(){
+            FB.api('/me', {fields: 'name, email' }, function (response) {
+                var xhttp = new XMLHttpRequest();
+                
+                xhttp.open("POST","/Transcript/php/login.php",true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("name="+response.name+"&id="+response.id+"&email="+response.email);
+                xhttp.onreadystatechange = function(){
+                    if(xhttp.readyState == 4 && xhttp.status == 200){
+                        alert("Bienvenido: "+response.name);
+                        window.location.href="http://localhost/Transcript/home.php";
+                    }
+                };
+        });
+    }
+
+
+</script>
+  
+
     <!-- Modal para Registrarse-->
     <div class="modal fade" id="registro" align="center">
         <div class="modal-dialog">
@@ -36,9 +125,16 @@
             <div class="modal-content">
                 <br>
                 <h4>Registro de Usuario</h4>
-                <div class = "fb-login-button" data-width = "" data-size = "large" data-button-type = "continue_with" data-auto-logout-link = "false" data-use-continue-as = "true" > </div>
-                <p><font color=gray>__________________ o __________________</font></p>
-                <div class="container">
+                <fb:login-button 
+                                data-button-type = "continue_with"
+                                class = "fb-login-button"
+                                data-size = "large"
+                                data-use-continue-as = "true"
+                                scope="public_profile,email"
+                                onlogin="checkLoginState();">
+                            </fb:login-button>   
+                
+                <div class="container"><hr>
                     <form action="php/singup.php" method="post">
                         <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" required><br>
                         <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Apellidos" required><br>
@@ -111,10 +207,15 @@
                         <br>
                         <h4>Iniciar Sesi&oacute;n</h4>
                         <div class="modal-body">
-                                <div class = "fb-login-button" data-width = "" data-size = "large" data-button-type = "continue_with" data-auto-logout-link = "false" data-use-continue-as = "true" > </div>
-                            <p>
-                                <font color=gray>__________________ o __________________</font>
-                            </p>
+                            <fb:login-button 
+                                data-button-type = "continue_with"
+                                class = "fb-login-button"
+                                data-size = "large"
+                                data-use-continue-as = "true"
+                                scope="public_profile,email"
+                                onlogin="checkLoginState();">
+                            </fb:login-button>   
+                            <hr>
                             <div id="InicioSesion">
                                 <form action="php/login.php" method="post">
                                     <div class="form-group">
