@@ -27,7 +27,7 @@
                 $_SESSION['nombre'] = $nombre." ".$apellidos;
                 $_SESSION['password'] = $contrasenna;
                 $_SESSION['area'] = $area;
-                session_set_cookie_params(3600, "/Transcript");
+                session_set_cookie_params(3600, "/Transcript/");
                 header( 'Location: /Transcript/home.php');
             }else{
                 echo "<script>alert('Credenciales Erroneas');window.location.href='/Transcript/';</script>";
@@ -50,6 +50,7 @@
         $usuario_encontrado = 0;
         while($usuario = mysqli_fetch_array($resultado)){
             $idUsuario = $usuario['id'];
+            $area = $usuario['AreaConocimiento'];
             $usuario_encontrado +=1;
         }
 
@@ -59,13 +60,15 @@
             $_SESSION['nombre'] = $name;
             $_SESSION['password'] = $id;
             $_SESSION['area'] = $area;
+            $_SESSION['fb_access_token'] = $_POST['token'];
+            session_set_cookie_params(3600, "/Transcript/");
             header('Location: /Transcript/home.php');
         }else{
             $nombre = explode(' ', $name);
             if($nombre.lenght > 2){
-                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre[0]."','".$nombre[1]."','NULL','".$email."','".$id."','Facebook')");
+                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre[0]."','".$nombre[1]."','NULL','".$email."','".$id."','Desconcida')");
             }else{
-                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre[0]."','".$nombre[1]."','".$nombre[2]."','".$email."','".$id."','Facebook')");
+                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre[0]."','".$nombre[1]."','".$nombre[2]."','".$email."','".$id."','Desconocida')");
             }
             $sql->runQuery();
             $sql->setSql("SELECT * FROM usuario WHERE `CorreoElectronico` = '".$email."' AND `Password` = '".$id."'");
@@ -73,6 +76,7 @@
             $usuario_encontrado = 0;
             while($usuario = mysqli_fetch_array($resultado)){
                 $idUsuario = $usuario['id'];
+                $area = $usuario['AreaConocimiento'];
                 $usuario_encontrado +=1;
             }
 
@@ -82,6 +86,8 @@
                 $_SESSION['nombre'] = $name;
                 $_SESSION['password'] = $id;
                 $_SESSION['area'] = $area;
+                $_SESSION['fb_access_token'] = $_POST['token'];
+                session_set_cookie_params(3600, "/Transcript");
                 header('Location: /Transcript/home.php');
             }
         }

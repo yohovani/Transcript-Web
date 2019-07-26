@@ -25,7 +25,6 @@
     }
 
     function eliminarTrancripcion(){
-        session_start();
         require_once("consulta.php");
         if(isset($_POST['id']) && isset($_SESSION['id'])){
             $sql = new consulta();

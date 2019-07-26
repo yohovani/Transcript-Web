@@ -38,14 +38,22 @@
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             </ul>
             <div class="form-inline my-2 my-lg-0">
-                <a class="nav-brand" href="#" data-toggle='modal' data-tooltip='tooltip'
-                data-placement='bottom' title='Cambiar Contrase&ntilde;a'
-                data-target='#cambiar-password'>
-                    <font color=white>Cambiar Contrase&ntilde;a&nbsp;&nbsp;&nbsp;</font>
-                </a>
+                <button class="button-color-nav"  data-toggle='modal' data-tooltip='tooltip' data-placement='bottom' title='Cambiar area de conocimiento' data-target='#cambiar-area' onClick='selectArea()'>
+                    Area de Conocimiento
+                </button>&nbsp;
+                <?php 
+                    if(!isset($_SESSION['fb_access_token'])){
+                        echo "<button class='button-color-nav' data-toggle='modal' data-tooltip='tooltip'
+                        data-placement='bottom' title='Cambiar Contrase&ntilde;a'
+                        data-target='#cambiar-password'>
+                            <font color=white>Cambiar Contrase&ntilde;a&nbsp;&nbsp;&nbsp;</font>
+                        </a>";
+                    }
+                ?>
+                <button class="button-color-nav">
                 <a class="nav-brand" href="php/logout.php">
                     <font color=white>Cerrar Sesión</font>
-                </a>
+                </a></button>
             </div>
         </div>
     </nav><br>
@@ -156,6 +164,37 @@
                     <h4 class="alert-heading">Se realizo una actualizaci&oacute;n!</h4>
                     <p>Los datos se actualizaron correctemente, es posible que debas actualizar la p&aacute;gina para visualizar los cambios.</p>
                     <center><button class='btn btn-success' data-dismiss='modal'>Aceptar</button></center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para seleccionar area al registrarse con facebook-->
+    <div class="modal fade" id="cambiar-area" name="cambiar-area">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Seleccione un area de Conocimiento</h4>
+                    <button type="button" class="close" data-dismiss="modal">x</button>
+                </div>
+                <div id="cambiar-area-resultado" name="cambiar-area-resultado"></div>
+                <div class="modal-body" align="center">
+                    <select class="form-control" name="area-cambiar" id="area-cambiar" required onchange="validarAreaRegistro()">
+                        <option value="seleccionar" size>Seleccione una Opción</option>
+                        <option value="Antropolog&iacute;a" size>Antropolog&iacute;a</option>
+                        <option value="Antropolog&iacute;a F&iacute;sica" size>Antropolog&iacute;a F&iacute;sica</option>
+                        <option value="Artes y Letras" size>Artes y Letras</option>
+                        <option value="Bibliotecolog&iacute;a" size>Bibliotecolog&iacute;a</option>
+                        <option value="Filosof&iacute;a" size>Filosof&iacute;a</option>
+                        <option value="Historia" size>Historia</option>
+                        <option value="Historia del Arte" size>Historia del Arte</option>
+                        <option value="Bibliotecolog&iacute;a" size>Ling&uuml;&iacute;stica</option>
+                        <option value="Otra" size>Otra</option>
+                    </select><br>
+                    <div class='form-group' align='center'>
+                        <button class='btn btn-secondary' data-dismiss='modal' >Cancelar</button>
+                        <button class="button button-color" onclick="actualizarArea()">Aceptar</button>
+                    </div>
                 </div>
             </div>
         </div>

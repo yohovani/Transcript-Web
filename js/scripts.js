@@ -186,3 +186,33 @@ function mostarMensajeEmail(){
 	$("#mensaje_email").modal("show");
 }
 
+function validarAreaRegistro(){
+	var area = document.getElementById("area");
+	var btn = document.getElementById('btn-registro');
+	if(area.value == "seleccionar"){
+		btn.disabled = false;
+		alert("Seleccione un area valida");
+	}
+}
+
+function selectArea(){
+	document.getElementById("area").selectedIndex=-1;
+}
+
+function actualizarArea(){
+	var area = document.getElementById("area-cambiar");
+	if(area.value == "seleccionar"){
+		alert("Seleccione un area valida");
+	}else{
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function(){
+			if(xhttp.readyState == 4 && xhttp.status == 200){
+				document.getElementById("cambiar-area-resultado").innerHTML = xhttp.responseText;
+			}
+		};
+		xhttp.open("POST","/Transcript/php/cambiar-area.php",true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send("area="+area.value);
+	}
+}
+

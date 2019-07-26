@@ -17,7 +17,7 @@
     <title>Transcript</title>
 </head>
 
-<body class="body">
+<body class="body" onload="selectArea()">
 
 <script>
     // This is called with the results from from FB.getLoginStatus().
@@ -31,7 +31,7 @@
         console.log('response: '+ Object.getOwnPropertyNames(response));
         if (response.status === 'connected') {
             // Logged into your app and Facebook.
-            login();
+            login(response.authResponse.accessToken);
         } else {
             // The person is not logged into your app or we are unable to tell.
             document.getElementById('status').innerHTML = 'Please log ' +
@@ -43,6 +43,16 @@
     // Button.  See the onlogin handler attached to it in the sample
     // code below.
     function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    function checkLoginStateRegistro(){
+        $("#area-Facebook").modal("show");
+    }
+
+    function registro(){
         FB.getLoginStatus(function (response) {
             statusChangeCallback(response);
         });
@@ -98,16 +108,17 @@
     
        
     }
-    function login(){
+    function login(token){
             FB.api('/me', {fields: 'name, email' }, function (response) {
                 var xhttp = new XMLHttpRequest();
                 
                 xhttp.open("POST","/Transcript/php/login.php",true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send("name="+response.name+"&id="+response.id+"&email="+response.email);
+                xhttp.send("name="+response.name+"&id="+response.id+"&email="+response.email+"&token="+token);
                 xhttp.onreadystatechange = function(){
                     if(xhttp.readyState == 4 && xhttp.status == 200){
                         alert("Bienvenido: "+response.name);
+                        console.log("name="+response.name+"&id="+response.id+"&email="+response.email+"&token="+token);
                         window.location.href="http://localhost/Transcript/home.php";
                     }
                 };
@@ -135,12 +146,12 @@
                             </fb:login-button>   
                 
                 <div class="container"><hr>
-                    <form action="php/singup.php" method="post">
+                    <form action="php/singup.php" method="post" name="registro-form">
                         <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" required><br>
                         <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Apellidos" required><br>
                         <input type="text" class="form-control" name="email" id="email" placeholder="Correo Electr&oacute;nico" required><br>
-                        <select class="form-control" name="area" id="area" required>
-                            <option value="Opcion 1" size>Seleccione una Opción</option>
+                        <select class="form-control" name="area" id="area" required onclik="validarAreaRegistro()">
+                            <option value="seleccionar" size>Seleccione una Opción</option>
                             <option value="Antropolog&iacute;a" size>Antropolog&iacute;a</option>
                             <option value="Antropolog&iacute;a F&iacute;sica" size>Antropolog&iacute;a F&iacute;sica</option>
                             <option value="Artes y Letras" size>Artes y Letras</option>
@@ -153,13 +164,14 @@
                         </select><br>
                         <input type="password" class="form-control" name="contrasenna" id="contrasenna" placeholder="Contrase&ntilde;a" required><br>
                         <input type="password" class="form-control" name="contrasenna2" id="contrasenna2" placeholder="Validar Contrase&ntilde;a" onkeyup="verificarPassword()" required><br>
-                        <button class="button-color" type="submit" id="btn-registro">Registrarme</button><br><br>
+                        <button class="button-color" type="submit" id="btn-registro" onclick="validarAreaRegistro()">Registrarme</button><br><br>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    
+
+
 
     <!-- Modal para Recuperar Contraseña-->
     <div class="modal fade" id="recuperar" align="center">
