@@ -213,6 +213,7 @@ function actualizarArea(){
 		xhttp.open("POST","/Transcript/php/cambiar-area.php",true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.send("area="+area.value);
+		listarTranscripciones();
 	}
 }
 

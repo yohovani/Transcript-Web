@@ -18,7 +18,12 @@
 </head>
 
 <body class="body" onload="selectArea()">
-
+    <?php
+        session_start();
+        if(isset($_SESSION['id'])){
+            header('Location: home.php');
+        }
+    ?>
 <script>
     // This is called with the results from from FB.getLoginStatus().
     function statusChangeCallback(response) {

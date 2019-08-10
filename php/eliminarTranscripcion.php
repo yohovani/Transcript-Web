@@ -15,7 +15,7 @@
         while($transcripcion = mysqli_fetch_array($resultado)){
             $titulo = $transcripcion['Titulo'];
         }
-        echo "<label class='control-label col-sm-12'>¿En verdad desea eliminar la transcripci&oacute;n: ".$titulo." ?</label>  
+        echo "<label class='control-label col-sm-12'>¿En verdad desea eliminar la transcripci&oacute;n: ".utf8_decode($titulo)." ?</label>  
                 <form class='form-horizontal'>
                     <div class='form-group' align='center'>
                         <button type='button' class='btn btn-danger' onclick='eliminarTranscripcion(".$_POST['id'].")'><img src='fonts/delete.svg' >&nbsp;Eliminar</button></td>
@@ -25,7 +25,9 @@
     }
 
     function eliminarTrancripcion(){
+        session_start();
         require_once("consulta.php");
+        echo "Id Usuario: ".$_SESSION['id']." -> Id Transcripcion: ".$_POST['id'];
         if(isset($_POST['id']) && isset($_SESSION['id'])){
             $sql = new consulta();
             //Elimianar la relacion

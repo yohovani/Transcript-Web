@@ -18,15 +18,15 @@
                 $nombre = $resultadoBusquedaUsuario['Nombre'];
                 $apellidos = $resultadoBusquedaUsuario['ApellidoPaterno']." ".$resultadoBusquedaUsuario['ApellidoMaterno'];
                 $contrasenna = $resultadoBusquedaUsuario['Password'];
-                $area = $resultadoBusquedaUsuario['AreaConocimiento'];
+                $area = utf8_decode($resultadoBusquedaUsuario['AreaConocimiento']);
                 $usuario_encontrado += 1;
             }
             if($usuario_encontrado == 1){
                 session_start();
                 $_SESSION['id'] = $id;
-                $_SESSION['nombre'] = $nombre." ".$apellidos;
+                $_SESSION['nombre'] = utf8_decode($nombre)." ".utf8_decode($apellidos);
                 $_SESSION['password'] = $contrasenna;
-                $_SESSION['area'] = $area;
+                $_SESSION['area'] = utf8_decode($area);
                 session_set_cookie_params(3600, "/Transcript/");
                 header( 'Location: /Transcript/home.php');
             }else{
@@ -44,7 +44,6 @@
         $name = $_POST['name'];
         $id = $_POST['id'];
         $email = $_POST['email'];
-        echo $email." , ".$name." , ".$id;
         $sql->setSql("SELECT * FROM usuario WHERE `CorreoElectronico` = '".$email."' AND `Password` = '".$id."'");
         $resultado = $sql->runQuery();
         $usuario_encontrado = 0;
@@ -66,9 +65,9 @@
         }else{
             $nombre = explode(' ', $name);
             if($nombre.lenght > 2){
-                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre[0]."','".$nombre[1]."','NULL','".$email."','".$id."','Desconcida')");
+                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".utf8_decode($nombre[0])."','".utf8_deocde($nombre[1])."','NULL','".$email."','".$id."','Desconcida')");
             }else{
-                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".$nombre[0]."','".$nombre[1]."','".$nombre[2]."','".$email."','".$id."','Desconocida')");
+                $sql->setSql("INSERT INTO usuario (`Nombre`,`ApellidoPaterno`,`ApellidoMaterno`,`CorreoElectronico`,`Password`,`AreaConocimiento`) VALUES ('".utf8_deocde($nombre[0])."','".utf8_deocde($nombre[1])."','".utf8_deocde($nombre[2])."','".$email."','".$id."','Desconocida')");
             }
             $sql->runQuery();
             $sql->setSql("SELECT * FROM usuario WHERE `CorreoElectronico` = '".$email."' AND `Password` = '".$id."'");
@@ -83,9 +82,9 @@
             if($usuario_encontrado > 0){
                 session_start();
                 $_SESSION['id'] = $usuario['id'];
-                $_SESSION['nombre'] = $name;
+                $_SESSION['nombre'] = utf8_deocde($name);
                 $_SESSION['password'] = $id;
-                $_SESSION['area'] = $area;
+                $_SESSION['area'] = utf8_decode($area);
                 $_SESSION['fb_access_token'] = $_POST['token'];
                 session_set_cookie_params(3600, "/Transcript");
                 header('Location: /Transcript/home.php');
