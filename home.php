@@ -52,7 +52,7 @@
                 ?>
                 <button class="button-color-nav">
                 <a class="nav-brand" href="php/logout.php">
-                    <font color=white>Cerrar Sesión</font>
+                    <font color=black>Cerrar Sesión</font>
                 </a></button>
             </div>
         </div>
