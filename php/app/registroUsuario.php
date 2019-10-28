@@ -13,11 +13,9 @@
 			$password=utf8_decode($_GET['Password']);
 			$area=utf8_decode($_GET['AreaCono']);
 			
-			$connection=mysqli_connect($hostname,$userBD,$passwordBD,$database);
-			
 
 			$queryRepeated="SELECT * FROM usuario WHERE CorreoElectronico='{$mail}'";
-			$resultRepeated=mysqli_query($connection,$queryRepeated);
+			$resultRepeated=mysqli_query($conexion,$queryRepeated);
 			
 			if (mysqli_num_rows($resultRepeated)>0) {
 				$json['message']='No se puede registrar el usuario ya existe';
@@ -25,11 +23,11 @@
 			}else{
 				$query="INSERT INTO usuario (id, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoElectronico, Password, AreaConocimiento) 
 					VALUES (NULL, '{$name}', '{$ap}', '{$am}', '{$mail}', '{$password}', '{$area}')";
-				$result=mysqli_query($connection,$query);
+				$result=mysqli_query($conexion,$query);
 				if($query){
 					$json['message']='Se registro exitosamente al usuario: ';
 					echo json_encode($json,JSON_UNESCAPED_UNICODE);
-					mysqli_close($connection);
+					mysqli_close($conexion);
 				}	
 				else{
 					$json['message']='No se pudo registrar verifique el formulario';
