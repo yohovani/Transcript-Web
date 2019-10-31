@@ -7,12 +7,15 @@ import numpy as np
 import argparse
 import time
 import cv2
+import os
 from PIL import Image
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", type=str,
 	help="path to input image")
+ap.add_argument("-id", "--id", type=str,
+	help="Trancription Id")
 ap.add_argument("-east", "--east", type=str,
 	help="path to input EAST text detector")
 ap.add_argument("-c", "--min-confidence", type=float, default=0.5,
@@ -118,6 +121,9 @@ for y in range(0, numRows):
 boxes = non_max_suppression(np.array(rects), probs=confidences)
 
 # loop over the bounding boxes
+dir = './transcription/'+args["id"]
+if not os.path.exists(dir):
+	os.mkdir(dir)
 i=0
 for (startX, startY, endX, endY) in boxes:
 	# scale the bounding box coordinates based on the respective
@@ -130,13 +136,13 @@ for (startX, startY, endX, endY) in boxes:
 	# draw the bounding box on the image
 	crop_img = orig[startY:endY, startX:endX]
 	if (endX+10) < W and (startX-10) >= 0 and (startY-15) >= 0 and (endY+15) < H:
-		cv2.imwrite('./recortes/'+repr(i)+'.png', orig[startY-15:endY+15, startX-10:endX+10])
+		cv2.imwrite('./transcription/'+args["id"]+'/'+repr(i)+'.png', orig[startY-15:endY+15, startX-10:endX+10])
 	else:
-		cv2.imwrite('./recortes/'+repr(i)+'.png', crop_img)
+		cv2.imwrite('./transcription/'+args["id"]+'/'+repr(i)+'.png', crop_img)
 	i+=1
-	cv2.rectangle(orig, (startX, startY), (endX, endY), (0, 255, 0), 1)
+	cv2.rectangle(orig, (startX, startY), (endX, endY), (255, 0, 0), 3)
 
 # show the output image
 #cv2.imshow("Text Detection", orig)
-#cv2.imwrite("Text Detection.jpg", orig)
+cv2.imwrite('./transcription/'+args["id"]+".jpg", orig)
 #cv2.waitKey(0)

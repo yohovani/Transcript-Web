@@ -1,5 +1,6 @@
 <?php
    ini_set("file_put_contents", true);
+   ini_set("display_errors", true);
    $hostname="localhost";
    $database="transcript";
    $userBD="root";
@@ -12,54 +13,32 @@
     // RUTA DONDE SE GUARDARAN LAS IMAGENES
     $path = "ImagenesTranscripcion/".$nombre.".jpg";
     $actualpath = "http://localhost/Transcript/php/app/".$path;
-#    move_uploaded_file($imagen, $actualpath)
+    $ruta = "./../php/app/".$path;
     file_put_contents($path, base64_decode($imagen));
     $bytesArchivo=file_get_contents($path);
     $time=time();
     $date=date("Y-m-d",$time);
-    $json['message']='La imagen fue enviada al servidor';
-    echo json_encode($json,JSON_UNESCAPED_UNICODE);
-/*    $sql="INSERT INTO transcripcion (id, Transcripcion, Titulo, FechaCreacion, UltimaModificacion, RutaImagen) VALUES (NULL, NULL, '{$date}', '{$date}', '{$date}', '{$actualpath}')";
+    //Inserción de la nueva transcripción a bd
+    $sql="INSERT INTO transcripcion (id, Transcripcion, Titulo, FechaCreacion, UltimaModificacion, RutaImagen) VALUES (NULL, NULL, '{$date}', '{$date}', '{$date}', '{$ruta}')";
     $stm=$connection->prepare($sql);
     if ($stm->execute()) {
-    	$json['message']='La imagen fue enviada al servidor';
+      include "../conexion.php";
+      //Selección del id de la ultima transcripción registrada
+      $resultado = mysqli_query($conexion,"SELECT MAX(id) as id FROM transcripcion") or die(mysqli_error($conexion));
+      $idTranscripcion = mysqli_fetch_array($resultado);
+      //Asignación de la transcripción al usuario
+      $relacion = mysqli_query($conexion, "INSERT INTO usuario_transcripcion (fkIdUsuario, fkIdTranscripcion) VALUES ('".$_POST['id']."','".$idTranscripcion[0]."')");
+      //Ejecución del modulo de transcripción
+        //Ejecución de la detección de palabras
+      shell_exec("python3 ../python/text_detection.py --image ".$actualpath." --east frozen_east_text_detection.pb");
+        //Ejecución de la detección de letras por palabra
+      shell_exec("python3 ../python/ROIs_Text.py --id ".$idTranscripcion[0]."");
+        //Ejecución de la transcripción
+      shell_exec("python3 ../python/transcripcion.py --id ".$idTranscripcion[0]."");
+        //Mensaje a la aplicaición que indica que la transcripción ya fue realizada
+      $json['message']='La imagen fue enviada al servidor';
     	echo json_encode($json,JSON_UNESCAPED_UNICODE);
     }else{
     	 $json['message']='No se pudo enviar la imagen al servidor. Intente de nuevo por favor';
     	 echo json_encode($json,JSON_UNESCAPED_UNICODE);
     }
-
-/*
-    require("../conexion.php");
-    require("consulta.php");
-    $imagen= $_POST['imagen'];
-    $nombre = $_POST['nombre'];
-    $idUsuario = $_POST['id'];
-    // RUTA DONDE SE GUARDARAN LAS IMAGENES
-    $path = "ImagenesTranscripcion/$nombre.jpg";
-    $actualpath = "localhost/Transcript/$path";
-    file_put_contents($path, base64_decode($imagen));
-    $bytesArchivo=file_get_contents($actualpath);
-    $time=time();
-    $date=date("Y-m-d",$time);
-    $sql="INSERT INTO transcripcion (id, Transcripcion, Titulo, FechaCreacion, UltimaModificacion, RutaImagen) VALUES (NULL, NULL, '{$date}', '{$date}', '{$date}', '{$actualpath}')";
-    $stm=$conexion->prepare($sql);
-    if ($stm->execute()) {
-        $json['message']='La imagen fue enviada al servidor';
-    	echo json_encode($json,JSON_UNESCAPED_UNICODE);
-        //Generación de la relación entre el usuario y la transcripcion
-        $sql_ = new consulta();
-        $sql->setSql("SELECT MAX(id) FROM transcripcion");
-        $idTranscripcion = $sql->runQuery();
-        $sql->setSql("INSERT INTO usuario_transcripcion (fkIdUsuario, fkIdTranscripcion) VALUES ('".$idUsuario."','".$idTranscripcion."')");
-        //Ejecución de los archivos python 
-#        shell_exec("python3 ../python/text_detection.py --image ".$ruta_img." --east frozen_east_text_detection.pb");
-#        shell_exec("python3 ../python/ROIs_Text.py");
-#        shell_exec("python3 ../python/transcripcion.py --id ".$idTranscripcion."");
-        $json['message']='La transcripción se realizo correctamente';
-    	echo json_encode($json,JSON_UNESCAPED_UNICODE);
-    }else{
-    	 $json['message']='No se pudo enviar la imagen al servidor. Intente de nuevo por favor';
-    	 echo json_encode($json,JSON_UNESCAPED_UNICODE);
-    }*/
-?>
