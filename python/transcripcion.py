@@ -15,8 +15,8 @@ ap.add_argument("-i", "--id", type=str,
 args = vars(ap.parse_args())
 
 longitud, altura = 150, 150
-modelo = './model/model2v(1)y2.h5'
-pesos = './model/weights2v(1)y2.h5'
+modelo = './../../python/model/model2v(1)y2.h5'
+pesos = './../../python/model/weights2v(1)y2.h5'
 
 cnn = load_model(modelo)
 cnn.load_weights(pesos)
@@ -31,7 +31,7 @@ def predict(file):
     return respuesta
 
 def transcripcion():
-    dir = './transcription/Letras/'+args["id"]
+    dir = './../../python/transcription/Letras/'+args["id"]
     list = listdir(dir)
     lista = []
     for i in list:
@@ -102,10 +102,10 @@ def transcripcion():
                     texto += "y"
                 elif aux == 26:
                     texto += "z"
-        #rmtree(dir + repr(i) + "/")
+        rmtree(dir + "/" +repr(i) + "/")
         transcripcion += " " + texto
     rmtree(dir)
-    dir = './transcription/'+args["id"]
+    dir = './../../python/transcription/'+args["id"]
     rmtree(dir)
     return transcripcion
 

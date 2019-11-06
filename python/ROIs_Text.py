@@ -10,15 +10,15 @@ ap.add_argument("-i", "--id", type=str,
 	help="path to input dir of image")
 args = vars(ap.parse_args())
 
-list = listdir('./transcription/'+args["id"])
+list = listdir('./../../python/transcription/'+args["id"])
 list.sort()
-os.mkdir('./transcription/Letras/'+args["id"])
+os.mkdir('./../../python/transcription/Letras/'+args["id"])
 for i in list:
 	auxDir = i.split('.')[0]
-	dir = './transcription/Letras/'+args["id"]+'/'+auxDir+"/";
+	dir = './../../python/transcription/Letras/'+args["id"]+'/'+auxDir+"/";
 	if not os.path.exists(dir):
 		os.mkdir(dir)
-	file = './transcription/'+args["id"]+"/"+i
+	file = './../../python/transcription/'+args["id"]+"/"+i
 	if os.stat(file).st_size != 0:
 		image = cv2.imread(file)
 		gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

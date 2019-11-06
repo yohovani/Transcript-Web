@@ -9,11 +9,11 @@
    
  	$connection=mysqli_connect($hostname,$userBD,$passwordBD,$database);
     $imagen= $_POST['imagen'];
-    $nombre = $_POST['nombre'];
+    $nombre = $_GET['nombre'];
     // RUTA DONDE SE GUARDARAN LAS IMAGENES
     $path = "ImagenesTranscripcion/".$nombre.".jpg";
     $actualpath = "http://localhost/Transcript/php/app/".$path;
-    $ruta = "./../php/app/".$path;
+#    $ruta = "./../php/app/".$path;
     file_put_contents($path, base64_decode($imagen));
     $bytesArchivo=file_get_contents($path);
     $time=time();
@@ -30,15 +30,16 @@
       $relacion = mysqli_query($conexion, "INSERT INTO usuario_transcripcion (fkIdUsuario, fkIdTranscripcion) VALUES ('".$_POST['id']."','".$idTranscripcion[0]."')");
       //Ejecución del modulo de transcripción
         //Ejecución de la detección de palabras
-      shell_exec("python3 ../python/text_detection.py --image ".$actualpath." --east frozen_east_text_detection.pb");
+      shell_exec("python3 ./../../python/text_detection.py --image ".$path." --id ".$idTranscripcion[0]." --east ./../../python/frozen_east_text_detection.pb");
         //Ejecución de la detección de letras por palabra
-      shell_exec("python3 ../python/ROIs_Text.py --id ".$idTranscripcion[0]."");
+      shell_exec("python3 ./../../python/ROIs_Text.py --id ".$idTranscripcion[0]."");
         //Ejecución de la transcripción
-      shell_exec("python3 ../python/transcripcion.py --id ".$idTranscripcion[0]."");
+      shell_exec("python3 ./../../python/transcripcion.py --id ".$idTranscripcion[0]."");
+      $idTranscripcion[0];
         //Mensaje a la aplicaición que indica que la transcripción ya fue realizada
       $json['message']='La imagen fue enviada al servidor';
     	echo json_encode($json,JSON_UNESCAPED_UNICODE);
-    }else{
-    	 $json['message']='No se pudo enviar la imagen al servidor. Intente de nuevo por favor';
-    	 echo json_encode($json,JSON_UNESCAPED_UNICODE);
-    }
+#    }else{
+#    	 $json['message']='No se pudo enviar la imagen al servidor. Intente de nuevo por favor';
+#    	 echo json_encode($json,JSON_UNESCAPED_UNICODE);
+#    }
