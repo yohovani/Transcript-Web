@@ -25,7 +25,7 @@ ap.add_argument("-w", "--width", type=int, default=320,
 ap.add_argument("-e", "--height", type=int, default=320,
 	help="resized image height (should be multiple of 32)")
 args = vars(ap.parse_args())
-
+print("Text_Detection")
 # load the input image and grab the image dimensions
 image = cv2.imread(args["image"])
 orig = image.copy()
@@ -121,7 +121,7 @@ for y in range(0, numRows):
 boxes = non_max_suppression(np.array(rects), probs=confidences)
 
 # loop over the bounding boxes
-dir = './../../python/transcription/'+args["id"]
+dir = './transcription/'+args["id"]
 print (dir)
 if not os.path.exists(dir):
 	os.mkdir(dir)
@@ -137,14 +137,14 @@ for (startX, startY, endX, endY) in boxes:
 	# draw the bounding box on the image
 	crop_img = orig[startY:endY, startX:endX]
 	if (endX+10) < W and (startX-10) >= 0 and (startY-15) >= 0 and (endY+15) < H:
-		cv2.imwrite('./../../python/transcription/'+args["id"]+'/'+repr(i)+'.png', orig[startY-15:endY+15, startX-10:endX+10])
+		cv2.imwrite('./transcription/'+args["id"]+'/'+repr(i)+'.png', orig[startY-15:endY+15, startX-10:endX+10])
 	else:
-		cv2.imwrite('./../../python/transcription/'+args["id"]+'/'+repr(i)+'.png', crop_img)
+		cv2.imwrite('./transcription/'+args["id"]+'/'+repr(i)+'.png', crop_img)
 	i+=1
 	cv2.rectangle(orig, (startX, startY), (endX, endY), (255, 0, 0), 3)
 
 # show the output image
 #cv2.imshow("Text Detection", orig)
 cv2.imwrite(args["image"], orig)
-cv2.imwrite('./transcription/'+args["id"]+".jpg", orig)
+#cv2.imwrite('./transcription/'+args["id"]+".jpg", orig)
 #cv2.waitKey(0)

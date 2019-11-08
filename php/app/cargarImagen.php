@@ -9,11 +9,11 @@
    
  	$connection=mysqli_connect($hostname,$userBD,$passwordBD,$database);
     $imagen= $_POST['imagen'];
-    $nombre = $_GET['nombre'];
+    $nombre = $_POST['nombre'];
     // RUTA DONDE SE GUARDARAN LAS IMAGENES
     $path = "ImagenesTranscripcion/".$nombre.".jpg";
     $actualpath = "http://localhost/Transcript/php/app/".$path;
-#    $ruta = "./../php/app/".$path;
+    $ruta = "./../php/app/".$path;
     file_put_contents($path, base64_decode($imagen));
     $bytesArchivo=file_get_contents($path);
     $time=time();
@@ -35,11 +35,11 @@
       shell_exec("python3 ./../../python/ROIs_Text.py --id ".$idTranscripcion[0]."");
         //Ejecución de la transcripción
       shell_exec("python3 ./../../python/transcripcion.py --id ".$idTranscripcion[0]."");
-      $idTranscripcion[0];
         //Mensaje a la aplicaición que indica que la transcripción ya fue realizada
       $json['message']='La imagen fue enviada al servidor';
-    	echo json_encode($json,JSON_UNESCAPED_UNICODE);
-#    }else{
-#    	 $json['message']='No se pudo enviar la imagen al servidor. Intente de nuevo por favor';
-#    	 echo json_encode($json,JSON_UNESCAPED_UNICODE);
-#    }
+      #$json['message']=$texto;      
+      echo json_encode($json,JSON_UNESCAPED_UNICODE);
+    }else{
+    	 $json['message']='No se pudo enviar la imagen al servidor. Intente de nuevo por favor';
+    	 echo json_encode($json,JSON_UNESCAPED_UNICODE);
+    }

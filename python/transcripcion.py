@@ -102,11 +102,11 @@ def transcripcion():
                     texto += "y"
                 elif aux == 26:
                     texto += "z"
-        rmtree(dir + "/" +repr(i) + "/")
+        #rmtree(dir + "/" +repr(i) + "/")
         transcripcion += " " + texto
-    rmtree(dir)
+    #rmtree(dir)
     dir = './../../python/transcription/'+args["id"]
-    rmtree(dir)
+    #rmtree(dir)
     return transcripcion
 
 def save_transcription():
