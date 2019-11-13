@@ -121,7 +121,7 @@ for y in range(0, numRows):
 boxes = non_max_suppression(np.array(rects), probs=confidences)
 
 # loop over the bounding boxes
-dir = './transcription/'+args["id"]
+dir = './../../python/transcription/'+args["id"]
 print (dir)
 if not os.path.exists(dir):
 	os.mkdir(dir)
@@ -137,9 +137,9 @@ for (startX, startY, endX, endY) in boxes:
 	# draw the bounding box on the image
 	crop_img = orig[startY:endY, startX:endX]
 	if (endX+10) < W and (startX-10) >= 0 and (startY-15) >= 0 and (endY+15) < H:
-		cv2.imwrite('./transcription/'+args["id"]+'/'+repr(i)+'.png', orig[startY-15:endY+15, startX-10:endX+10])
+		cv2.imwrite('./../../python/transcription/'+args["id"]+'/'+repr(i)+'.png', orig[startY-15:endY+15, startX-10:endX+10])
 	else:
-		cv2.imwrite('./transcription/'+args["id"]+'/'+repr(i)+'.png', crop_img)
+		cv2.imwrite('./../../python//transcription/'+args["id"]+'/'+repr(i)+'.png', crop_img)
 	i+=1
 	cv2.rectangle(orig, (startX, startY), (endX, endY), (255, 0, 0), 3)
 

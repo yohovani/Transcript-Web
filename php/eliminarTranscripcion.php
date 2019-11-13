@@ -27,12 +27,16 @@
     function eliminarTrancripcion(){
         session_start();
         require_once("consulta.php");
-        echo "Id Usuario: ".$_SESSION['id']." -> Id Transcripcion: ".$_POST['id'];
         if(isset($_POST['id']) && isset($_SESSION['id'])){
             $sql = new consulta();
             //Elimianar la relacion
             $sql->setSql("DELETE FROM usuario_transcripcion WHERE fkIdUsuario = '".$_SESSION['id']."' AND fkIdTranscripcion = '".$_POST['id']."'");
             $sql->runQuery();
+            //Eliminar Imagen
+            $sql->setSql("SELECT RutaImagen FROM transcripcion WHERE id='".$_POST['id']."'");
+            $rutaImg = $sql->runQuery();
+            $rutaImg = mysqli_fetch_array($rutaImg);
+            unlink($rutaImg[0]);
             //Eliminar la Transcripcion
             $sql->setSql("DELETE FROM transcripcion WHERE id = '".$_POST['id']."'");
             $sql->runQuery();

@@ -12,10 +12,12 @@ args = vars(ap.parse_args())
 
 list = listdir('./../../python/transcription/'+args["id"])
 list.sort()
-os.mkdir('./../../python/transcription/Letras/'+args["id"])
+if not os.path.exists('./../../python/transcription/Letras/'+args["id"]):
+	os.mkdir('./../../python/transcription/Letras/'+args["id"])
 for i in list:
 	auxDir = i.split('.')[0]
-	dir = './../../python/transcription/Letras/'+args["id"]+'/'+auxDir+"/";
+	dir = './../../python/transcription/Letras/'+args["id"]+'/'+auxDir+"/"
+	print (dir)
 	if not os.path.exists(dir):
 		os.mkdir(dir)
 	file = './../../python/transcription/'+args["id"]+"/"+i
@@ -25,7 +27,7 @@ for i in list:
 		#gray = cv2.equalizeHist(gray)
 		(height, weight) = image.shape[:2]
 		#Escala de Grises
-		cv2.imshow('gray', gray)
+#		cv2.imshow('gray', gray)
 		#cv2.waitKey(0)
 
 

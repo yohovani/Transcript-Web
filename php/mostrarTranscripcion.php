@@ -12,7 +12,9 @@
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-2'>Contenido</label>
-                    <div class='col-sm-12'><textarea name='editarTranscipcion' id='editarTranscripcion' class='form-control' rows='5' >".utf8_decode($transcripcion['Transcripcion'])."</textarea></div>   
+                    <div class='col-sm-12'><textarea name='editarTranscipcion' id='editarTranscripcion' class='form-control' rows='5' >".utf8_decode($transcripcion['Transcripcion'])."</textarea></div>
+                    <label class='control-label col-sm-11'>Imagen Recibida:</label>
+                    <div class='col-sm-12'><img src='http://192.168.0.21/Transcript/php/".$transcripcion['RutaImagen']."' class='img-fluid' alt='Imeagen correspondiente a: ".utf8_decode($transcripcion['Titulo'])."'></div>
                 </div> 
                 <div class='form-group' align='center'>
                     <button class='btn btn-secondary' data-dismiss='modal' >Cancelar</button>
