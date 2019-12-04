@@ -63,6 +63,14 @@
         });
     }
 
+/*    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '494433771364519',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v.3.'
+    });*/
+
     window.fbAsyncInit = function () {
         FB.init({
             appId: '2464888593735937',

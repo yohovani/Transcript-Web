@@ -46,7 +46,7 @@
                         echo "<button class='button-color-nav' data-toggle='modal' data-tooltip='tooltip'
                         data-placement='bottom' title='Cambiar Contrase&ntilde;a'
                         data-target='#cambiar-password'>
-                            <font color=white>Cambiar Contrase&ntilde;a&nbsp;&nbsp;&nbsp;</font>
+                            <font color=black>Cambiar Contrase&ntilde;a&nbsp;&nbsp;&nbsp;</font>
                         </a>";
                     }
                 ?>

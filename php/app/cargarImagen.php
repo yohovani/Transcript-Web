@@ -12,7 +12,7 @@
 
     // RUTA DONDE SE GUARDARAN LAS IMAGENES
     $path = "ImagenesTranscripcion/$nombre.jpg";
-    $actualpath = "http://192.168.0.21/Transcript/php/app/$path";
+    $actualpath = "http://192.168.43.145/Transcript/php/app/$path";
     file_put_contents($path, base64_decode($imagen));
     $bytesArchivo=file_get_contents($path);
 
