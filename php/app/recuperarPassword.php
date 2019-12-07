@@ -29,7 +29,7 @@ require("../conexion.php");
 					$email->IsSMTP(); // telling the class to use SMTP
 					$email->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server
 	    			$email->SMTPAuth = true; // enable SMTP authentication
-	    			$email->Username = "gsilva.bryan@gmail.com"; // GMAIL username
+	    			$email->Username = ""; // GMAIL username
 	    			$email->Password = ""; // GMAIL password
 	    			$email->SMTPSecure = "tls"; // sets the prefix to the servier
 	    			$email->Port = 587; // set the SMTP port for the GMAIL server
